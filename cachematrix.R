@@ -14,7 +14,8 @@
 ##
 makeCacheMatrix <- function(x = matrix()) {
     inv <- NULL
-    # Local function used to handle the inverse of wrapped
+    
+    # Local functions used to handle the inverse of x thorough cache
     set <- function(val) { x <<- val; inv <<- NULL }
     get <- function() x
     set_solve <- function(val) inv <<- val
@@ -34,9 +35,11 @@ makeCacheMatrix <- function(x = matrix()) {
 ##
 cacheSolve <- function(x, ...) {
     inv <- x$get_solve()
-    if (!is.null(inv)) {
+    if (!is.null(inv)) { # Cache found, no need to re-compute
         message("getting cached data")
-    } else {
+    } 
+    else # No cache found, compute-cache the inverse of x
+    {
         w_matrix <- x$get()
         inv <- solve(w_matrix, ...)
         x$set_solve(inv)
